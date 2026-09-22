@@ -28,6 +28,7 @@ function loadEnv() {
   if (sessionSecret && sessionSecret.length < 32) {
     problems.push('SESSION_SECRET must be at least 32 characters long');
   }
+  const orgApiMock = str('ORG_API_MOCK') === '1';
 
   if (problems.length > 0) {
     const message = [
@@ -38,7 +39,7 @@ function loadEnv() {
     throw new Error(message);
   }
 
-  return { port, mongodbUri, sessionSecret };
+  return { port, mongodbUri, sessionSecret, orgApiMock };
 }
 
 export const env = loadEnv();

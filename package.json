@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node --env-file=.env src/server.js"
+    "start": "node --env-file=.env src/server.js",
+    "sync": "node --env-file=.env scripts/sync.js"
   },
   "keywords": [],
   "type": "module",
