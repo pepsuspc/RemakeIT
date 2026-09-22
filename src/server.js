@@ -74,8 +74,8 @@ async function main() {
     res.send('<h1>HelloBro</h1>');
   });
 
-  app.get('/dev/a4-test', (req, res) => {
-    res.render('a4-test');
+  app.get('/memo', (req, res) => {
+    res.render('memo-edit');
   });
 
   app.listen(env.port, () => {
