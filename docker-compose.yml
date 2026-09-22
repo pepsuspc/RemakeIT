@@ -1,0 +1,26 @@
+services:
+  app:
+    build:
+      context: .
+      network: host
+    # network_mode: host ใช้ชั่วคราวเฉพาะใน sandbox นี้ (มันสร้างสายเชื่อม
+    # เครือข่ายเสมือนแบบปกติไม่ได้) — บนเครื่องจริงให้ลบบรรทัดนี้ทิ้ง แล้วใช้
+    # `ports: ["3000:3000"]` กับ MONGODB_URI=mongodb://mongo:27017/... แทน
+    network_mode: host
+    volumes:
+      - ./src:/app/src
+      - /app/node_modules
+    env_file:
+      - .env
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:5.0
+    command: ["mongod", "--bind_ip_all"]
+    network_mode: host
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:

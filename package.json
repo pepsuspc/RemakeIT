@@ -4,11 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node src/server.js"
+    "start": "node --env-file=.env src/server.js"
   },
   "keywords": [],
   "type": "module",
   "dependencies": {
-    "express": "^4.22.3"
+    "express": "^4.22.3",
+    "mongodb": "^7.6.0"
   }
 }
