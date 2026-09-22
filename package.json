@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node --env-file=.env src/server.js",
-    "sync": "node --env-file=.env scripts/sync.js"
+    "sync": "node --env-file=.env scripts/sync.js",
+    "test": "node --env-file=.env --test test/"
   },
   "keywords": [],
   "type": "module",
