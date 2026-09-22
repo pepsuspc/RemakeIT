@@ -7,10 +7,17 @@
   <link rel="stylesheet" href="/css/a4.css">
 </head>
 <body>
+  <% var errs = typeof errors === 'undefined' ? {} : errors; %>
+
   <div class="a4-toolbar no-print">
     <button type="button" id="btn-save">บันทึกร่าง</button>
     <span id="save-status"></span>
+    <button type="submit" form="memo-form" formaction="/memo/<%= draft._id %>/submit" formmethod="POST">ส่ง</button>
   </div>
+
+  <% if (Object.keys(errs).length > 0) { %>
+    <div class="a4-error-summary no-print">กรุณาตรวจสอบ <%= Object.keys(errs).length %> ช่องที่ยังไม่ได้กรอก</div>
+  <% } %>
 
   <form id="memo-form" data-submission-id="<%= draft._id %>">
   <div class="a4-page-wrap">
@@ -33,14 +40,16 @@
           <label class="a4-field-label" for="f-subject">
             เรื่อง <span class="a4-required">*</span>
           </label>
-          <input class="a4-input" type="text" id="f-subject" name="values[subject]" maxlength="200" value="<%= draft.values.subject || '' %>">
+          <input class="a4-input" type="text" id="f-subject" name="values[subject]" maxlength="200" required value="<%= draft.values.subject || '' %>">
+          <% if (errs.subject) { %><div class="a4-field-error"><%= errs.subject %></div><% } %>
         </div>
 
         <div class="a4-field" style="grid-column: 1 / span 16;">
           <label class="a4-field-label" for="f-to">
             เรียน <span class="a4-required">*</span>
           </label>
-          <input class="a4-input" type="text" id="f-to" name="values[to]" maxlength="200" value="<%= draft.values.to || '' %>">
+          <input class="a4-input" type="text" id="f-to" name="values[to]" maxlength="200" required value="<%= draft.values.to || '' %>">
+          <% if (errs.to) { %><div class="a4-field-error"><%= errs.to %></div><% } %>
         </div>
 
         <div class="a4-field" style="grid-column: 1 / span 24;">
@@ -60,7 +69,8 @@
         </div>
 
         <div class="a4-field" style="grid-column: 1 / span 24;">
-          <textarea class="a4-input" id="f-details" name="values[details]" rows="8" maxlength="5000"><%= draft.values.details || '' %></textarea>
+          <textarea class="a4-input" id="f-details" name="values[details]" rows="8" maxlength="5000" required><%= draft.values.details || '' %></textarea>
+          <% if (errs.details) { %><div class="a4-field-error"><%= errs.details %></div><% } %>
         </div>
 
       </div>

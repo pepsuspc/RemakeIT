@@ -151,4 +151,21 @@ textarea.a4-input {
     size: A4;
     margin: 0;
   }
+
+.a4-field-error {
+  color: #b3261e;
+  font-size: 9pt;
+  margin-top: 1mm;
+}
+
+.a4-error-summary {
+  max-width: 210mm;
+  margin: 0 auto 0.75rem;
+  padding: 0.5rem 1rem;
+  background: #fdecea;
+  border: 1px solid #f3c2bd;
+  border-radius: 6px;
+  color: #7a1f16;
+  font-size: 0.9rem;
+}
 }

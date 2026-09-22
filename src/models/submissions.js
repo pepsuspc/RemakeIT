@@ -30,9 +30,27 @@ export async function saveDraftValues(id, empId, values) {
   return result.matchedCount > 0;
 }
 
-export function listMyDrafts(empId) {
+export function listMySubmissions(empId) {
   return collection()
-    .find({ status: 'draft', 'submitter.emp_id': empId })
+    .find({ 'submitter.emp_id' : empId })
     .sort({ updatedAt: -1 })
     .toArray();
+}
+
+export async function submitDraft(id, empId, { values, docNumber, submittedAt }) {
+  const result = await collection().updateOne(
+    { _id: id, status: 'draft', 'submitter.emp_id': empId },
+    {
+      $set: {
+        status: 'pending',
+        docNumber,
+        values,
+        submittedAt,
+        autoValues: { submittedAt: submittedAt.toISOString() },
+        rounds: [],
+        updatedAt: submittedAt,
+      },
+    },
+  );
+  return result.matchedCount > 0;
 }

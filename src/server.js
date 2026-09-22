@@ -11,7 +11,9 @@ async function main() {
   const { allEmployees } = await import('./org/client.js');
   const { syncUsers } = await import('./org/sync.js');
   const { findUserByEmpId } = await import('./models/users.js');
-  const { createDraft, findDraftById, saveDraftValues, listMyDrafts } = await import('./models//submissions.js');
+  const { createDraft, findDraftById, saveDraftValues, submitDraft, listMySubmissions } = await import('./models/submissions.js');
+  const { nextDocNumber } = await import('./domain/docNumber.js');
+  const { validateMemoValues } = await import('./domain/validateMemo.js');
   const { ObjectId } = await import('mongodb');
 
   await connectDb();
@@ -106,9 +108,34 @@ async function main() {
     res.json({ ok: true });
   });
 
+  app.post('/memo/:id/submit', async (req, res) => {
+    let objectId;
+    try {
+      objectId = new ObjectId(req.params.id);
+    } catch {
+      return res.status(404).send('ไม่พบร่างนี้');
+    }
+
+    const values = req.body.values || {};
+    const saved = await saveDraftValues(objectId, req.session.emp_id, values);
+    if (!saved) return res.status(404).send('ไม่พบร่างนี้');
+
+    const errors = validateMemoValues(values);
+    if (Object.keys(errors).length > 0) {
+      const draft = await findDraftById(objectId, req.session.emp_id);
+      return res.status(400).render('memo-edit', { draft, errors });
+    }
+
+    const docNumber = await nextDocNumber('MEMO');
+    const submittedAt = new Date();
+    await submitDraft(objectId, req.session.emp_id, { values, docNumber, submittedAt });
+
+    res.send(`ส่งสำเร็จ เลขที่เอกสาร: ${docNumber} (หน้าดูรายละเอียดจะสร้างในงาน 1.11)`);
+  });
+
   app.get('/submissions/mine', async (req, res) => {
-    const drafts = await listMyDrafts(req.session.emp_id);
-    res.render('submissions-mine', { drafts });
+    const submissions = await listMySubmissions(req.session.emp_id);
+    res.render('submissions-mine', { submissions });
   });
 
   app.listen(env.port, () => {

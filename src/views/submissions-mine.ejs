@@ -8,14 +8,18 @@
   <h1>คำร้องของฉัน</h1>
   <p><a href="/memo/new">+ สร้าง MEMO ใหม่</a></p>
   <ul>
-    <% drafts.forEach(function (d) { %>
+    <% submissions.forEach(function (s) { %>
       <li>
-        <a href="/memo/<%= d._id %>/edit"><%= d.values.subject || '(ยังไม่มีชื่อเรื่อง)' %></a>
-        — ร่าง — แก้ไขล่าสุด <%= d.updatedAt.toLocaleString('th-TH') %>
+        <% if (s.status === 'draft') { %>
+          <a href="/memo/<%= s._id %>/edit"><%= s.values.subject || '(ยังไม่มีชื่อเรื่อง)' %></a>
+          — ร่าง — แก้ไขล่าสุด <%= s.updatedAt.toLocaleString('th-TH') %>
+        <% } else { %>
+          <%= s.docNumber %> — <%= s.values.subject %> — สถานะ: <%= s.status %>
+        <% } %>
       </li>
     <% }) %>
-    <% if (drafts.length === 0) { %>
-      <li>ยังไม่มีร่าง</li>
+    <% if (submissions.length === 0) { %>
+      <li>ยังไม่มีคำร้อง</li>
     <% } %>
   </ul>
 </body>
