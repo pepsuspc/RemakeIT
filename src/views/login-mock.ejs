@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <title>เข้าสู่ระบบ (mock) — its-forms</title>
+</head>
+<body>
+  <h1>its-forms</h1>
+  <p>โหมดทดสอบ — เลือกพนักงานเพื่อเข้าสู่ระบบเป็นคนนั้น</p>
+  <ul>
+    <% employees.forEach(function (emp) { %>
+      <li>
+        <form method="POST" action="/auth/mock-login" style="display:inline">
+          <input type="hidden" name="emp_id" value="<%= emp.emp_id %>">
+          <button type="submit"><%= emp.name %> (<%= emp.department ? emp.department.name : '-' %>)</button>
+        </form>
+      </li>
+    <% }) %>
+  </ul>
+</body>
+</html>
