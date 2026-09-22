@@ -1,0 +1,14 @@
+{
+  "name": "its-forms-mine",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "keywords": [],
+  "type": "module",
+  "dependencies": {
+    "express": "^4.22.3"
+  }
+}
