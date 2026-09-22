@@ -7,6 +7,12 @@
   <link rel="stylesheet" href="/css/a4.css">
 </head>
 <body>
+  <div class="a4-toolbar no-print">
+    <button type="button" id="btn-save">บันทึกร่าง</button>
+    <span id="save-status"></span>
+  </div>
+
+  <form id="memo-form" data-submission-id="<%= draft._id %>">
   <div class="a4-page-wrap">
     <div class="a4-page">
 
@@ -27,21 +33,22 @@
           <label class="a4-field-label" for="f-subject">
             เรื่อง <span class="a4-required">*</span>
           </label>
-          <input class="a4-input" type="text" id="f-subject" name="values[subject]" maxlength="200">
+          <input class="a4-input" type="text" id="f-subject" name="values[subject]" maxlength="200" value="<%= draft.values.subject || '' %>">
         </div>
 
         <div class="a4-field" style="grid-column: 1 / span 16;">
           <label class="a4-field-label" for="f-to">
             เรียน <span class="a4-required">*</span>
           </label>
-          <input class="a4-input" type="text" id="f-to" name="values[to]" maxlength="200">
+          <input class="a4-input" type="text" id="f-to" name="values[to]" maxlength="200" value="<%= draft.values.to || '' %>">
         </div>
 
         <div class="a4-field" style="grid-column: 1 / span 24;">
           <div class="a4-checkbox-row">
+            <% var selectedPurpose = draft.values.purpose || []; %>
             <% ['เพื่อทราบ', 'เพื่อดำเนินการ', 'เพื่อบันทึก', 'เพื่อการอนุมัติของท่าน', 'อื่น ๆ'].forEach(function (opt) { %>
               <label>
-                <input type="checkbox" name="values[purpose][]" value="<%= opt %>">
+                <input type="checkbox" name="values[purpose][]" value="<%= opt %>" <%= selectedPurpose.includes(opt) ? 'checked' : '' %>>
                 <%= opt %>
               </label>
             <% }) %>
@@ -53,7 +60,7 @@
         </div>
 
         <div class="a4-field" style="grid-column: 1 / span 24;">
-          <textarea class="a4-input" id="f-details" name="values[details]" rows="8" maxlength="5000"></textarea>
+          <textarea class="a4-input" id="f-details" name="values[details]" rows="8" maxlength="5000"><%= draft.values.details || '' %></textarea>
         </div>
 
       </div>
@@ -61,5 +68,8 @@
       <div class="a4-page-number">หน้า 1</div>
     </div>
   </div>
+  </form>
+
+  <script src="/js/autosave.js"></script>
 </body>
 </html>

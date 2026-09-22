@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>คำร้องของฉัน</title>
+</head>
+<body>
+  <h1>คำร้องของฉัน</h1>
+  <p><a href="/memo/new">+ สร้าง MEMO ใหม่</a></p>
+  <ul>
+    <% drafts.forEach(function (d) { %>
+      <li>
+        <a href="/memo/<%= d._id %>/edit"><%= d.values.subject || '(ยังไม่มีชื่อเรื่อง)' %></a>
+        — ร่าง — แก้ไขล่าสุด <%= d.updatedAt.toLocaleString('th-TH') %>
+      </li>
+    <% }) %>
+    <% if (drafts.length === 0) { %>
+      <li>ยังไม่มีร่าง</li>
+    <% } %>
+  </ul>
+</body>
+</html>

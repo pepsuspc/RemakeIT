@@ -11,6 +11,8 @@ async function main() {
   const { allEmployees } = await import('./org/client.js');
   const { syncUsers } = await import('./org/sync.js');
   const { findUserByEmpId } = await import('./models/users.js');
+  const { createDraft, findDraftById, saveDraftValues, listMyDrafts } = await import('./models//submissions.js');
+  const { ObjectId } = await import('mongodb');
 
   await connectDb();
   console.log('เชื่อมต่อ MongoDB สำเร็จ');
@@ -74,8 +76,39 @@ async function main() {
     res.send('<h1>HelloBro</h1>');
   });
 
-  app.get('/memo', (req, res) => {
-    res.render('memo-edit');
+  app.get('/memo/new', async (req, res) => {
+    const user = await findUserByEmpId(req.session.emp_id);
+    const id = await createDraft(user);
+    res.redirect(`/memo/${id}/edit`);
+  });
+
+  app.get('/memo/:id/edit', async (req, res) => {
+    let objectId;
+    try {
+      objectId = new ObjectId(req.params.id);
+    } catch {
+      return res.status(404).send('ไม่พบร่างนี้');
+    }
+    const draft = await findDraftById(objectId, req.session.emp_id);
+    if (!draft) return res.status(404).send('ไม่พบร่างนี้');
+    res.render('memo-edit', { draft });
+  });
+
+  app.post('/memo/:id/save', async (req, res) => {
+    let objectId;
+    try {
+      objectId = new ObjectId(req.params.id);
+    } catch {
+      return res.status(404).json({ ok: false });
+    }
+    const ok = await saveDraftValues(objectId, req.session.emp_id, req.body.values || {});
+    if (!ok) return res.status(404).json({ ok: false });
+    res.json({ ok: true });
+  });
+
+  app.get('/submissions/mine', async (req, res) => {
+    const drafts = await listMyDrafts(req.session.emp_id);
+    res.render('submissions-mine', { drafts });
   });
 
   app.listen(env.port, () => {

@@ -116,6 +116,26 @@ textarea.a4-input {
   color: #666;
 }
 
+.a4-toolbar {
+  max-width: 210mm;
+  margin: 0 auto 0.5rem;
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0 1rem;
+}
+
+.a4-toolbar button {
+  padding: 0.4rem 1rem;
+  font: inherit;
+  cursor: pointer;
+}
+
+#save-status {
+  font-size: 0.85rem;
+  color: #666;
+}
+
 @media print {
   .a4-page-wrap {
     padding: 0;
@@ -123,6 +143,9 @@ textarea.a4-input {
   }
   .a4-page {
     box-shadow: none;
+  }
+  .no-print {
+    display: none !important;
   }
   @page {
     size: A4;
