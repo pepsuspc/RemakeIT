@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>MEMO ขออนุมัติ</title>
+  <link rel="stylesheet" href="/css/fonts.css">
+  <link rel="stylesheet" href="/css/a4.css">
+</head>
+<body>
+  <div class="a4-toolbar no-print">
+    <span id="save-status">สถานะ: <%= STATUS_LABEL[submission.status] %> · <%= submission.docNumber %></span>
+  </div>
+
+  <div class="a4-page-wrap">
+    <div class="a4-page">
+
+      <% if (submission.status !== 'approved') { %>
+        <div class="a4-watermark"><%= STATUS_LABEL[submission.status] %></div>
+      <% } %>
+
+      <div class="a4-title-bar">
+        <div></div>
+        <div class="a4-form-title">MEMO ขออนุมัติ</div>
+        <div class="a4-doc-number"><%= submission.docNumber || '(ยังไม่มีเลขที่)' %></div>
+      </div>
+
+      <div class="a4-grid">
+
+        <div class="a4-field" style="grid-column: 17 / span 8;">
+          <label class="a4-field-label a4-align-right">วันที่ <%= (submission.autoValues && submission.autoValues.submittedAt) ? formatThaiDate(submission.autoValues.submittedAt) : '—' %></label>
+        </div>
+
+        <div class="a4-field" style="grid-column: 1 / span 24;">
+          <label class="a4-field-label a4-align-left">เรื่อง <%= submission.values.subject || '—' %></label>
+        </div>
+
+        <div class="a4-field" style="grid-column: 1 / span 16;">
+          <label class="a4-field-label a4-align-left">เรียน <%= submission.values.to || '—' %></label>
+        </div>
+
+        <div class="a4-field" style="grid-column: 1 / span 24;">
+          <div class="a4-checkmarks">
+            <% var selectedPurpose = submission.values.purpose || []; %>
+            <% ['เพื่อทราบ', 'เพื่อดำเนินการ', 'เพื่อบันทึก', 'เพื่อการอนุมัติของท่าน', 'อื่น ๆ'].forEach(function (opt) { %>
+              <span><%= selectedPurpose.includes(opt) ? '☑' : '☐' %> <%= opt %></span>
+            <% }) %>
+          </div>
+        </div>
+
+        <div class="a4-field" style="grid-column: 1 / span 24;">
+          <h3 class="a4-static-heading">รายละเอียด</h3>
+        </div>
+
+        <div class="a4-field" style="grid-column: 1 / span 24;">
+          <div class="a4-value" style="white-space: pre-wrap;"><%= submission.values.details || '—' %></div>
+        </div>
+
+      </div>
+
+      <div class="a4-page-number">หน้า 1</div>
+    </div>
+  </div>
+</body>
+</html>

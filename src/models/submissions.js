@@ -54,3 +54,7 @@ export async function submitDraft(id, empId, { values, docNumber, submittedAt })
   );
   return result.matchedCount > 0;
 }
+
+export function findSubmissionById(id, empId) {
+  return collection().findOne({ _id: id, 'submitter.emp_id': empId });
+}

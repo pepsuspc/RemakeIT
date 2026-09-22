@@ -11,9 +11,11 @@ async function main() {
   const { allEmployees } = await import('./org/client.js');
   const { syncUsers } = await import('./org/sync.js');
   const { findUserByEmpId } = await import('./models/users.js');
-  const { createDraft, findDraftById, saveDraftValues, submitDraft, listMySubmissions } = await import('./models/submissions.js');
+  const { createDraft, findDraftById, saveDraftValues, submitDraft, listMySubmissions, findSubmissionById } = await import('./models/submissions.js');
   const { nextDocNumber } = await import('./domain/docNumber.js');
   const { validateMemoValues } = await import('./domain/validateMemo.js');
+  const { STATUS_LABEL } = await import('./domain/statusLabels.js');
+  const { formatThaiDate } = await import('./domain/thaiDate.js');
   const { ObjectId } = await import('mongodb');
 
   await connectDb();
@@ -25,6 +27,7 @@ async function main() {
   const app = express();
   app.set('view engine', 'ejs');
   app.set('views', path.join(__dirname, 'views'));
+  app.locals.STATUS_LABEL = STATUS_LABEL;
 
   app.use(express.static(path.join(__dirname, '../public')));
   
@@ -130,7 +133,19 @@ async function main() {
     const submittedAt = new Date();
     await submitDraft(objectId, req.session.emp_id, { values, docNumber, submittedAt });
 
-    res.send(`ส่งสำเร็จ เลขที่เอกสาร: ${docNumber} (หน้าดูรายละเอียดจะสร้างในงาน 1.11)`);
+    res.redirect(`/memo/${objectId}/view`);
+  });
+
+  app.get('/memo/:id/view', async (req, res) => {
+    let objectId;
+    try {
+      objectId = new ObjectId(req.params.id);
+    } catch {
+      return res.status(404).send('ไม่พบคำร้องนี้');
+    }
+    const submission = await findSubmissionById(objectId, req.session.emp_id);
+    if (!submission) return res.status(404).send('ไม่พบคำร้องนี้');
+    res.render('memo-view', { submission, formatThaiDate });
   });
 
   app.get('/submissions/mine', async (req, res) => {

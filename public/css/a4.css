@@ -168,4 +168,23 @@ textarea.a4-input {
   color: #7a1f16;
   font-size: 0.9rem;
 }
+.a4-checkmarks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2mm 6mm;
+  font-size: 10.5pt;
+}
+
+.a4-watermark {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-30deg);
+  font-size: 48pt;
+  font-weight: 700;
+  color: rgba(100, 100, 100, 0.18);
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+}
 }

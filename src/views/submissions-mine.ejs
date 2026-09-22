@@ -14,7 +14,8 @@
           <a href="/memo/<%= s._id %>/edit"><%= s.values.subject || '(ยังไม่มีชื่อเรื่อง)' %></a>
           — ร่าง — แก้ไขล่าสุด <%= s.updatedAt.toLocaleString('th-TH') %>
         <% } else { %>
-          <%= s.docNumber %> — <%= s.values.subject %> — สถานะ: <%= s.status %>
+          <a href="/memo/<%= s._id %>/view"><%= s.docNumber %> — <%= s.values.subject %></a>
+          — สถานะ: <%= STATUS_LABEL[s.status] %>
         <% } %>
       </li>
     <% }) %>
