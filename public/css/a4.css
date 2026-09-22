@@ -1,0 +1,51 @@
+/* กระดาษ A4 คุมขนาดด้วยหน่วย mm เอง เพื่อให้พิมพ์ออกมาตรงเป๊ะ (สเปก §7.2) */
+
+.a4-page-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
+  background: #e9e9e9;
+}
+
+.a4-page {
+  position: relative;
+  width: 210mm;
+  min-height: 297mm;
+  padding: 15mm;
+  box-sizing: border-box;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  font-family: 'Sarabun', 'Noto Sans Thai', sans-serif;
+  font-size: 11pt;
+  line-height: 1.5;
+  color: #111;
+}
+
+.a4-title {
+  font-size: 16pt;
+  font-weight: 700;
+  text-align: center;
+  margin: 0 0 6mm;
+}
+
+.a4-page-number {
+  position: absolute;
+  bottom: 8mm;
+  right: 15mm;
+  font-size: 9pt;
+  color: #666;
+}
+
+@media print {
+  .a4-page-wrap {
+    padding: 0;
+    background: #fff;
+  }
+  .a4-page {
+    box-shadow: none;
+  }
+  @page {
+    size: A4;
+    margin: 0;
+  }
+}

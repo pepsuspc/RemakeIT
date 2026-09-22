@@ -22,6 +22,8 @@ async function main() {
   app.set('view engine', 'ejs');
   app.set('views', path.join(__dirname, 'views'));
 
+  app.use(express.static(path.join(__dirname, '../public')));
+  
   app.use(express.urlencoded({ extended: true }));
 
   app.use((req, res, next) => {
@@ -70,6 +72,10 @@ async function main() {
 
   app.get('/about', (req, res) => {
     res.send('<h1>HelloBro</h1>');
+  });
+
+  app.get('/dev/a4-test', (req, res) => {
+    res.render('a4-test');
   });
 
   app.listen(env.port, () => {
